@@ -1,12 +1,12 @@
 package com.simpo.simplepost.board.entity;
 
 import com.simpo.simplepost.board.dto.BoardResponseDto;
-import com.simpo.simplepost.common.BaseEntity;
 import com.simpo.simplepost.post.entity.Post;
 import com.simpo.simplepost.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Builder
 @Entity
-public class Board extends BaseEntity {
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "board_id")
@@ -23,6 +23,8 @@ public class Board extends BaseEntity {
 
     private String title;
     private String description;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

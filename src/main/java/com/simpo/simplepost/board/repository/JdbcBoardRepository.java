@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,6 +43,10 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
     public Board saveBoard(Board board) {
         if (board.getId() == null){
             KeyHolder keyHolder = new GeneratedKeyHolder();
+            // 수동으로 생성시간, 수정시간 주입
+            LocalDateTime currentTime = LocalDateTime.now();
+            board.setCreatedAt(currentTime);
+            board.setUpdatedAt(currentTime);
 
             jdbcTemplate.update((con) -> {
                 PreparedStatement ps =
@@ -55,11 +60,14 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
                 ps.setTimestamp(5, Timestamp.valueOf(board.getUpdatedAt()));
                 return ps;
             },keyHolder);
+
             Number key = keyHolder.getKey();
             if (key != null) {
                 board.setId(key.longValue());
             }
         }else {
+            // 수동으로 수정시간 주입
+            board.setUpdatedAt(LocalDateTime.now());
             jdbcTemplate.update("UPDATE board SET title = ?, description = ?, user_id = ?, updated_at=? WHERE board_id = ?",
                     board.getTitle(),
                     board.getDescription(),
