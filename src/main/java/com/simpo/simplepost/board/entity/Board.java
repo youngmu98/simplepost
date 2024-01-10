@@ -5,15 +5,13 @@ import com.simpo.simplepost.common.BaseEntity;
 import com.simpo.simplepost.post.entity.Post;
 import com.simpo.simplepost.user.entity.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 
 @AllArgsConstructor
+@Setter
 @Getter
 @Builder
 @Entity
