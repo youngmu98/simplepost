@@ -18,7 +18,7 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public JdbcBoardRepository(JdbcTemplate jdbcTemplate){
+    public JdbcBoardRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -41,37 +41,19 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
 
     @Override
     public Board saveBoard(Board board) {
-        if (board.getId() == null){
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            // 수동으로 생성시간, 수정시간 주입
+        if (board.getId() == null) {
             LocalDateTime currentTime = LocalDateTime.now();
             board.setCreatedAt(currentTime);
             board.setUpdatedAt(currentTime);
 
-            jdbcTemplate.update((con) -> {
-                PreparedStatement ps =
-                        con.prepareStatement(
-                                "INSERT INTO board(title, description, user_id, created_at, updated_at) VALUES (?,?,?,?,?)",
-                                new String[]{"board_id"});
-                ps.setString(1, board.getTitle());
-                ps.setString(2, board.getDescription());
-                ps.setLong(3, board.getUser().getId());
-                ps.setTimestamp(4, Timestamp.valueOf(board.getCreatedAt()));
-                ps.setTimestamp(5, Timestamp.valueOf(board.getUpdatedAt()));
-                return ps;
-            },keyHolder);
-
-            Number key = keyHolder.getKey();
-            if (key != null) {
-                board.setId(key.longValue());
-            }
-        }else {
+            jdbcTemplate.update("INSERT INTO board(title, description, created_at, updated_at) VALUES (?,?,?,?)",
+                    board.getTitle(), board.getDescription(), Timestamp.valueOf(board.getCreatedAt()), Timestamp.valueOf(board.getUpdatedAt()));
+        } else {
             // 수동으로 수정시간 주입
             board.setUpdatedAt(LocalDateTime.now());
-            jdbcTemplate.update("UPDATE board SET title = ?, description = ?, user_id = ?, updated_at=? WHERE board_id = ?",
+            jdbcTemplate.update("UPDATE board SET title = ?, description = ?, updated_at=? WHERE board_id = ?",
                     board.getTitle(),
                     board.getDescription(),
-                    board.getUser().getId(),
                     Timestamp.valueOf(board.getUpdatedAt()),
                     board.getId()
             );
@@ -80,8 +62,11 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
     }
 
     @Override
-    public Optional<Board> findByName(String name) {
-        return Optional.empty();
+    public Optional<Board> findById(Long id) {
+        return jdbcTemplate.query("SELECT * FROM board WHERE board_id = ?",
+                rowMapper,
+                id)
+                .stream().findFirst();
     }
 
     @Override

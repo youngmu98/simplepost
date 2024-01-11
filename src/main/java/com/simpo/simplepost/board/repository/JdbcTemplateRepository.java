@@ -9,7 +9,7 @@ public interface JdbcTemplateRepository {
 
     List<Board> findAll();
 
-    Optional<Board> findByName(String name);
+    Optional<Board> findById(Long id);
 
     Board saveBoard(Board board);
 
