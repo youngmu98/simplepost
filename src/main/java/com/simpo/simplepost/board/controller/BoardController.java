@@ -24,12 +24,12 @@ public class BoardController {
     public String getBoards(Model model) {
         List<Board> boards = boardService.findAll();
         model.addAttribute("boards", boards);
-        return "boards";
+        return "board/boards";
     }
 
     @GetMapping("/add")
     public String getAddView() {
-        return "addBoardForm";
+        return "board/addBoardForm";
     }
 
     @PostMapping("/add")
@@ -44,7 +44,7 @@ public class BoardController {
     public String getEditView(@PathVariable Long boardId, Model model){
         Board board = boardService.findById(boardId);
         model.addAttribute("board", board);
-        return "editBoardForm";
+        return "board/editBoardForm";
     }
 
     @PostMapping("/edit/{boardId}")
