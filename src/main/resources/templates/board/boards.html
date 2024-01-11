@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+</head>
+
+<body>
+    <h1>게시판 목록</h1>
+    <div>
+        <a th:href="@{boards/add}">게시판 생성</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>제목</th>
+                <th>내용</th>
+                <th>생성일</th>
+                <th>수정</th>
+                <th>삭제</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="board : ${boards}">
+                    <td th:text="${board.id}">1</td>
+                    <td th:text="${board.title}">게시글 제목</td>
+                    <td th:text="${board.description}">게시글 내용</td>
+                    <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
+                <td>
+                    <div><a th:href="@{boards/edit/{id}(id=${board.id})}">수정</a></div>
+                </td>
+                <td>
+                    <form th:action="@{/boards/{boardId}(boardId=${board.id})}" method="post">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
