@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시판 편집</title>
+</head>
+<body>
+    <h1>게시판 편집</h1>
+    <form th:action="@{/boards/edit/{board_id}(board_id=${board.id})}" th:object="${board}" method="post">
+        <div>
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title" th:value="${board.title}" required />
+        </div>
+        <div>
+            <label for="description">설명:</label>
+            <input type="text" id="description" name="description" th:value="${board.description}" required />
+        </div>
+        <div>
+            <button type="submit">게시판 수정</button>
+            <button type="button" onclick="window.history.back();">취소</button>
+        </div>
+    </form>
+</body>
+</html>
