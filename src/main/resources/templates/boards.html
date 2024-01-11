@@ -20,6 +20,7 @@
                 <th>내용</th>
                 <th>생성일</th>
                 <th>수정</th>
+                <th>삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +31,12 @@
                     <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
                 <td>
                     <div><a th:href="@{boards/edit/{id}(id=${board.id})}">수정</a></div>
+                </td>
+                <td>
+                    <form th:action="@{/boards/{boardId}(boardId=${board.id})}" method="post">
+                        <input type="hidden" name="_method" value="delete" />
+                        <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
