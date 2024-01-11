@@ -5,6 +5,7 @@ import com.simpo.simplepost.board.repository.JdbcBoardRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -19,7 +20,22 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
-    public Board saveBoard(Board requestBoard) {
-        return boardRepository.saveBoard(requestBoard);
+    public void createBoard(Board requestBoard) {
+        boardRepository.saveBoard(requestBoard);
+    }
+
+    public void updateBoard(Board board){
+        Board editBoard = boardRepository.findById(board.getId()).orElse(null);
+
+        Optional.ofNullable(board.getTitle())
+                .ifPresent(title -> editBoard.setTitle(title));
+        Optional.ofNullable(board.getDescription())
+                .ifPresent(description -> editBoard.setDescription(description));
+
+        boardRepository.saveBoard(editBoard);
+    }
+
+    public Board findById(Long board_id){
+        return boardRepository.findById(board_id).orElse(null);
     }
 }

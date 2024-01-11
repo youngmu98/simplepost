@@ -41,6 +41,12 @@ public class Board extends BaseEntity {
         this.description = description;
     }
 
+    public Board(Long id, String title, String description) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+    }
+
     public BoardResponseDto toBoardResponseDto(){
         return new BoardResponseDto(id, title, description, getCreatedAt(), getUpdatedAt());
     }
