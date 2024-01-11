@@ -1,21 +1,18 @@
 package com.simpo.simplepost.board.entity;
 
-import com.simpo.simplepost.board.dto.BoardResponseDto;
 import com.simpo.simplepost.common.BaseEntity;
 import com.simpo.simplepost.post.entity.Post;
-import com.simpo.simplepost.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 
 @AllArgsConstructor
 @Setter
 @Getter
-@Builder
 @Entity
+@Builder
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,18 +21,17 @@ public class Board extends BaseEntity {
 
     private String title;
     private String description;
-//    private LocalDateTime createdAt;
-//    private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "board")
+    private List<Post> posts;
 
 //    @ManyToOne
 //    @JoinColumn(name = "user_id")
 //    private User user;
 
-    @OneToMany(mappedBy = "board")
-    private List<Post> posts;
+    public Board() {
 
-    public Board() {}
-
+    }
     public Board(String title, String description) {
         this.title = title;
         this.description = description;
@@ -47,7 +43,4 @@ public class Board extends BaseEntity {
         this.description = description;
     }
 
-    public BoardResponseDto toBoardResponseDto(){
-        return new BoardResponseDto(id, title, description, getCreatedAt(), getUpdatedAt());
-    }
 }
