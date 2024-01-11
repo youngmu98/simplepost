@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>게시판</title>
+</head>
+
+<body>
+    <h1>게시판 목록</h1>
+    <div>
+        <a th:href="@{boards/add}">게시판 생성</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>제목</th>
+                <th>내용</th>
+                <th>생성일</th>
+                <th>수정</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="board : ${boards}">
+                    <td th:text="${board.id}">1</td>
+                    <td th:text="${board.title}">게시글 제목</td>
+                    <td th:text="${board.description}">게시글 내용</td>
+                    <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
+                <td>
+                    <button th:onclick="">수정</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
