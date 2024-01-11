@@ -35,7 +35,11 @@ public class BoardService {
         boardRepository.saveBoard(editBoard);
     }
 
-    public Board findById(Long board_id){
-        return boardRepository.findById(board_id).orElse(null);
+    public Board findById(Long boardId){
+        return boardRepository.findById(boardId).orElse(null);
+    }
+
+    public void deleteBoard(Long boardId) {
+        boardRepository.deleteBoard(boardId);
     }
 }

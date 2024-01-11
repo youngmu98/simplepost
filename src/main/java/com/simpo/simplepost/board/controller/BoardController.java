@@ -2,7 +2,6 @@ package com.simpo.simplepost.board.controller;
 
 import com.simpo.simplepost.board.dto.BoardPatchDto;
 import com.simpo.simplepost.board.dto.BoardPostDto;
-import com.simpo.simplepost.board.dto.BoardResponseDto;
 import com.simpo.simplepost.board.entity.Board;
 import com.simpo.simplepost.board.service.BoardService;
 import org.springframework.stereotype.Controller;
@@ -41,18 +40,24 @@ public class BoardController {
         return "redirect:/boards";
     }
 
-    @GetMapping("/edit/{board_id}")
-    public String getEditView(@PathVariable Long board_id, Model model){
-        Board board = boardService.findById(board_id);
+    @GetMapping("/edit/{boardId}")
+    public String getEditView(@PathVariable Long boardId, Model model){
+        Board board = boardService.findById(boardId);
         model.addAttribute("board", board);
         return "editBoardForm";
     }
 
-    @PostMapping("/edit/{board_id}")
-    public String updateBoard(@PathVariable Long board_id, @ModelAttribute BoardPatchDto boardPatchDto){
-        boardPatchDto.setId(board_id);
+    @PostMapping("/edit/{boardId}")
+    public String updateBoard(@PathVariable Long boardId, @ModelAttribute BoardPatchDto boardPatchDto){
+        boardPatchDto.setId(boardId);
         Board board = boardPatchDto.toEntity();
         boardService.updateBoard(board);
+        return "redirect:/boards";
+    }
+
+    @PostMapping("/{boardId}")
+    public String deleteBoard(@PathVariable Long boardId){
+        boardService.deleteBoard(boardId);
         return "redirect:/boards";
     }
 
