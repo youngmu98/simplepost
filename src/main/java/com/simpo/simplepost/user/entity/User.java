@@ -25,11 +25,11 @@ public class User {
 
     private String userName;
     private String nickname;
-    private String login_id;
+    private String loginId;
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private List<Board> boards;
+//    @OneToMany(mappedBy = "user")
+//    private List<Board> boards;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
