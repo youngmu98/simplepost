@@ -1,4 +1,4 @@
-package com.simpo.simplepost.controller;
+package com.simpo.simplepost.post.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
