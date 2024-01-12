@@ -23,11 +23,12 @@ public class Post extends BaseEntity {
     private Long id;
 
     private String title;
+    @Column(columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     @ManyToOne
     @JoinColumn(name = "board_id")
@@ -35,6 +36,11 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
+
+    public void addBoard(Board board) {
+        this.board = board;
+        board.addPost(this);
+    }
 
 
 }
