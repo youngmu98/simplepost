@@ -31,10 +31,10 @@ public class User {
 //    @OneToMany(mappedBy = "user")
 //    private List<Board> boards;
 
-    @OneToMany(mappedBy = "user")
-    private List<Post> posts;
+//    @OneToMany(mappedBy = "user")
+//    private List<Post> posts;
 
-    @OneToMany(mappedBy = "user")
-    private List<Comment> comments;
+//    @OneToMany(mappedBy = "user")
+//    private List<Comment> comments;
 
 }
