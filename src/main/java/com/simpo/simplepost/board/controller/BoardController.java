@@ -4,6 +4,8 @@ import com.simpo.simplepost.board.dto.BoardPatchDto;
 import com.simpo.simplepost.board.dto.BoardPostDto;
 import com.simpo.simplepost.board.entity.Board;
 import com.simpo.simplepost.board.service.BoardService;
+import com.simpo.simplepost.post.entity.Post;
+import com.simpo.simplepost.post.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,11 @@ import java.util.List;
 @Controller
 public class BoardController {
 
+    private final PostService postService;
     private final BoardService boardService;
 
-    public BoardController(BoardService boardService) {
+    public BoardController(PostService postService, BoardService boardService) {
+        this.postService = postService;
         this.boardService = boardService;
     }
 
@@ -33,7 +37,7 @@ public class BoardController {
     }
 
     @PostMapping("/add")
-    public String postBoard(@ModelAttribute BoardPostDto boardPostDto){
+    public String postBoard(@ModelAttribute BoardPostDto boardPostDto) {
         Board requestBoard = boardPostDto.toEntity();
         boardService.createBoard(requestBoard);
 
@@ -41,14 +45,14 @@ public class BoardController {
     }
 
     @GetMapping("/edit/{boardId}")
-    public String getEditView(@PathVariable Long boardId, Model model){
+    public String getEditView(@PathVariable Long boardId, Model model) {
         Board board = boardService.findById(boardId);
         model.addAttribute("board", board);
         return "board/editBoardForm";
     }
 
     @PostMapping("/edit/{boardId}")
-    public String updateBoard(@PathVariable Long boardId, @ModelAttribute BoardPatchDto boardPatchDto){
+    public String updateBoard(@PathVariable Long boardId, @ModelAttribute BoardPatchDto boardPatchDto) {
         boardPatchDto.setId(boardId);
         Board board = boardPatchDto.toEntity();
         boardService.updateBoard(board);
@@ -56,9 +60,17 @@ public class BoardController {
     }
 
     @PostMapping("/{boardId}")
-    public String deleteBoard(@PathVariable Long boardId){
+    public String deleteBoard(@PathVariable Long boardId) {
         boardService.deleteBoard(boardId);
         return "redirect:/boards";
     }
 
+    @GetMapping("/{boardId}")
+    public String getBoardDetail(Model model, @PathVariable Long boardId){
+        Board board = boardService.findById(boardId);
+        List<Post> posts = postService.findByBoardId(boardId);
+        model.addAttribute("board",board);
+        model.addAttribute("posts",posts);
+        return "board/board";
+    }
 }

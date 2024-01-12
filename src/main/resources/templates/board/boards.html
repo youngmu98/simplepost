@@ -26,7 +26,7 @@
         <tbody>
             <tr th:each="board : ${boards}">
                     <td th:text="${board.id}">1</td>
-                    <td th:text="${board.title}">게시글 제목</td>
+                    <td><a th:href="@{boards/{id}(id=${board.id})}" th:text="${board.title}">게시글 제목</a></td>
                     <td th:text="${board.description}">게시글 내용</td>
                     <td th:text="${#temporals.format(board.createdAt, 'yyyy-MM-dd HH:mm')}">생성일</td>
                 <td>

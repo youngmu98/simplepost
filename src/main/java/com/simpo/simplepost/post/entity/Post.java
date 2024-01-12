@@ -38,9 +38,15 @@ public class Post extends BaseEntity {
     private List<Comment> comments;
 
     public void addBoard(Board board) {
-        this.board = board;
-        board.addPost(this);
+        if (board != null) {
+            this.board = board;
+            board.addPost(this);
+        }
     }
 
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
 }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 페이지</title>
+    <!-- 여기에 스타일시트 및 자바스크립트 파일 연결 -->
+</head>
+<body>
+
+    <h1 th:text="${board.title}">Board Title</h1>
+    <!-- 상세 정보를 여기에 표시 -->
+    <div>
+        <h2>게시글 목록</h2>
+        <div th:if="${not #lists.isEmpty(posts)}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>게시판 번호</th>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성일</th>
+                        <!-- 필요한 경우 다른 컬럼 추가 -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="post : ${posts}">
+                        <td th:text="${board.id}"></td>
+                        <td th:text="${post.id}">1</td>
+                        <td><a th:href="@{/posts/post/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a></td>
+                        <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</td>
+                        <!-- 필요한 경우 다른 데이터 출력 -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:unless="${not #lists.isEmpty(posts)}">
+            <p>게시글이 없습니다.</p>
+        </div>
+    </div>
+
+    <!-- 새 게시글 추가 버튼 -->
+    <div>
+        <a th:href="@{/{boardId}/posts/add(boardId=${board.id})}">새 게시글 작성</a>
+    </div>
+
+</body>
+</html>

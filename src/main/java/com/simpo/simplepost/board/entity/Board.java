@@ -45,6 +45,11 @@ public class Board extends BaseEntity {
     }
 
     public void addPost(Post post) {
-        posts.add(post);
+        if (post != null) {
+            if (posts == null) {
+                posts = new ArrayList<>();
+            }
+            posts.add(post);
+        }
     }
 }

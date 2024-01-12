@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 생성</title>
+</head>
+<body>
+    <h1>게시글 생성</h1>
+    <form th:action="@{/{boardId}/posts/add(boardId=${board.id})}"  method="post">
+        <div>
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title"  required />
+        </div>
+        <div>
+            <label for="content">내용:</label>
+            <input type="text" id="content" name="content"  required />
+        </div>
+        <div>
+            <button type="submit">게시글 생성</button>
+            <button type="button" onclick="window.history.back();">취소</button>
+        </div>
+    </form>
+</body>
+</html>
