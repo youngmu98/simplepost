@@ -51,4 +51,21 @@ public class PostService {
         postRepository.delete(post);
         return boardId;
     }
+
+    public Post findByPostId(Long postId) {
+        return postRepository.findById(postId).orElse(null);
+    }
+
+    public Post updatePost(Post editpost) {
+        Post post = postRepository.findById(editpost.getId()).orElse(null);
+
+        if (!post.getTitle().isEmpty()){
+            post.setTitle(editpost.getTitle());
+        }
+        if (!post.getContent().isEmpty()) {
+            post.setContent(editpost.getContent());
+        }
+        postRepository.save(post);
+        return post;
+    }
 }

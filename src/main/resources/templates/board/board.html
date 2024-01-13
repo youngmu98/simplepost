@@ -38,6 +38,9 @@
                         </td>
                         <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</td>
                         <td>
+                            <div><a th:href="@{/posts/edit/{id}(id=${post.id})}">수정</a></div>
+                        </td>
+                        <td>
                             <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post">
                                 <input type="hidden" name="_method" value="delete" />
                                 <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
