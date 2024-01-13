@@ -39,5 +39,12 @@ public class PostController {
         return "redirect:/boards/{boardId}";
     }
 
+    @PostMapping("/posts/{postId}")
+    public String deletePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
+        Long boardId = postService.deletePostById(postId);
+        redirectAttributes.addAttribute("boardId",boardId);
+        return "redirect:/boards/{boardId}";
+    }
+
 
 }

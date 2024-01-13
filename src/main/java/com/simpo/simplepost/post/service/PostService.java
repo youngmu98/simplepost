@@ -44,4 +44,11 @@ public class PostService {
         List<Post> posts = postRepository.findByBoardId(boardId);
         return posts;
     }
+
+    public Long deletePostById(Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        Long boardId = post.getBoard().getId();
+        postRepository.delete(post);
+        return boardId;
+    }
 }

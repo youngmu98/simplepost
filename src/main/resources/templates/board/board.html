@@ -7,7 +7,7 @@
 </head>
 
 <body>
-
+    <a href="/boards">게시판 목록으로 돌아가기</a>
     <h1 th:text="${board.title}">Board Title</h1>
     <!-- 검색 폼 -->
     <form th:action="@{/boards/{boardId}(boardId=${board.id})}" method="get">
@@ -26,6 +26,7 @@
                         <th>번호</th>
                         <th>제목</th>
                         <th>작성일</th>
+                        <th>삭제</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -36,6 +37,12 @@
                             <a th:href="@{/posts/post/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a>
                         </td>
                         <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</td>
+                        <td>
+                            <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post">
+                                <input type="hidden" name="_method" value="delete" />
+                                <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>
