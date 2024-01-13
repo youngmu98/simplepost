@@ -56,11 +56,20 @@ public class PostController {
     }
 
     @PostMapping("/posts/edit/{postId}")
-    public String updatePost(@PathVariable Long postId, @ModelAttribute PostPatchDto postPatchDto ){
+    public String updatePost(@PathVariable Long postId, @ModelAttribute PostPatchDto postPatchDto) {
         postPatchDto.setPostId(postId);
-        Post editpost =  postPatchDto.toEntity();
+        Post editpost = postPatchDto.toEntity();
         Post post = postService.updatePost(editpost);
 
-        return "redirect:/boards/"+post.getBoard().getId();
+        return "redirect:/boards/" + post.getBoard().getId();
+    }
+
+    @GetMapping("/post/{postId}")
+    public String getPostDetail(@PathVariable Long postId, Model model) {
+        Post post = postService.findByPostId(postId);
+        Long boardId = post.getBoard().getId();
+        model.addAttribute("post", post);
+        model.addAttribute("boardId", boardId);
+        return "/post/post";
     }
 }
