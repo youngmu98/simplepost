@@ -1,9 +1,12 @@
 package com.simpo.simplepost.post.service;
 
+import com.simpo.simplepost.board.entity.Board;
 import com.simpo.simplepost.board.repository.JdbcBoardRepository;
 import com.simpo.simplepost.post.dto.PostCreateDto;
 import com.simpo.simplepost.post.entity.Post;
 import com.simpo.simplepost.post.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +20,14 @@ public class PostService {
     public PostService(PostRepository postRepository, JdbcBoardRepository boardRepository) {
         this.postRepository = postRepository;
         this.boardRepository = boardRepository;
+    }
+
+    public Page<Post> findPostsByBoardAndKeyword(Board board, String keyword, PageRequest pageRequest){
+        if (keyword != null && !keyword.isEmpty()){
+            return postRepository.findAllByBoardAndTitleContaining(board, keyword, pageRequest);
+        }else{
+            return postRepository.findAllByBoardOrderByCreatedAtDesc(board, pageRequest);
+        }
     }
 
     public void addPost(PostCreateDto postCreateDto) {

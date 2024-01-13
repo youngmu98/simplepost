@@ -6,6 +6,10 @@ import com.simpo.simplepost.board.entity.Board;
 import com.simpo.simplepost.board.service.BoardService;
 import com.simpo.simplepost.post.entity.Post;
 import com.simpo.simplepost.post.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -65,12 +69,20 @@ public class BoardController {
         return "redirect:/boards";
     }
 
-    @GetMapping("/{boardId}")
-    public String getBoardDetail(Model model, @PathVariable Long boardId){
+    @GetMapping("{boardId}")
+    public String getBoardDetail(Model model, @PathVariable Long boardId,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 @RequestParam(required = false) String keyword
+                                 ){
         Board board = boardService.findById(boardId);
-        List<Post> posts = postService.findByBoardId(boardId);
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Post> postPage = postService.findPostsByBoardAndKeyword(board, keyword, pageRequest);
+
         model.addAttribute("board",board);
-        model.addAttribute("posts",posts);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("postPage",postPage);
         return "board/board";
     }
+
 }
