@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
@@ -70,7 +71,9 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
     }
 
     @Override
+    @Transactional
     public void deleteBoard(Long id) {
+        jdbcTemplate.update("DELETE FROM post WHERE board_id = ?", id);
         jdbcTemplate.update("DELETE FROM board WHERE board_id = ?", id);
     }
 }

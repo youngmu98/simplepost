@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${board.title} + ' 게시판'">게시글 페이지</title>
+</head>
+
+<body>
+    <a href="/boards">게시판 목록으로 돌아가기</a>
+    <h1 th:text="${board.title}">Board Title</h1>
+    <!-- 검색 폼 -->
+    <form th:action="@{/boards/{boardId}(boardId=${board.id})}" method="get">
+        <input type="text" name="keyword" placeholder="키워드 검색" th:value="${keyword}" />
+        <button type="submit">검색</button>
+    </form>
+
+    <!-- 게시글 목록 -->
+    <div>
+        <h2>게시글 목록</h2>
+        <div th:if="${not #lists.isEmpty(postPage.content)}">
+            <table>
+                <thead>
+                    <tr>
+                        <th>게시판 번호</th>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성일</th>
+                        <th>삭제</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="post : ${postPage.content}">
+                        <td th:text="${board.id}"></td>
+                        <td th:text="${post.id}">1</td>
+                        <td>
+                            <a th:href="@{/post/{id}(id=${post.id})}" th:text="${post.title}">Post Title</a>
+                        </td>
+                        <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</td>
+                        <td>
+                            <div><a th:href="@{/posts/edit/{id}(id=${post.id})}">수정</a></div>
+                        </td>
+                        <td>
+                            <form th:action="@{/posts/{postId}(postId=${post.id})}" method="post">
+                                <input type="hidden" name="_method" value="delete" />
+                                <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:unless="${not #lists.isEmpty(postPage.content)}">
+            <p>게시글이 없습니다.</p>
+        </div>
+    </div>
+
+    <!-- 새 게시글 추가 버튼 -->
+    <div>
+        <a th:href="@{/{boardId}/posts/add(boardId=${board.id})}">새 게시글 작성</a>
+    </div>
+
+    <!-- 페이징 처리 -->
+    <div th:if="${postPage.totalPages > 1}">
+        <ul>
+            <li th:each="pageNum : ${#numbers.sequence(0, postPage.totalPages - 1)}">
+                <a th:href="@{/boards/{boardId}(boardId=${board.id}, page=${pageNum}, size=${postPage.size}, keyword=${keyword})}"
+                    th:text="${pageNum + 1}" th:classappend="${pageNum == postPage.number ? 'active' : ''}">1</a>
+            </li>
+        </ul>
+    </div>
+
+</body>
+
+</html>
