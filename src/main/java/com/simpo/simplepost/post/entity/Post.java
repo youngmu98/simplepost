@@ -36,11 +36,13 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
-
     public Post(Long postId, String title, String content) {
         this.id = postId;
+        this.title = title;
+        this.content = content;
+    }
+
+    public Post(String title, String content) {
         this.title = title;
         this.content = content;
     }
@@ -50,11 +52,6 @@ public class Post extends BaseEntity {
             this.board = board;
             board.addPost(this);
         }
-    }
-
-    public Post(String title, String content) {
-        this.title = title;
-        this.content = content;
     }
 
 }

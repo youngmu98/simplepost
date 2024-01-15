@@ -2,11 +2,12 @@ package com.simpo.simplepost.post.controller;
 
 import com.simpo.simplepost.board.entity.Board;
 import com.simpo.simplepost.board.service.BoardService;
+import com.simpo.simplepost.comment.entity.Comment;
+import com.simpo.simplepost.comment.service.CommentService;
 import com.simpo.simplepost.post.dto.PostCreateDto;
 import com.simpo.simplepost.post.dto.PostPatchDto;
 import com.simpo.simplepost.post.entity.Post;
 import com.simpo.simplepost.post.service.PostService;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,12 @@ public class PostController {
 
     private final PostService postService;
     private final BoardService boardService;
+    private final CommentService commentService;
 
-    public PostController(PostService postService, BoardService boardService) {
+    public PostController(PostService postService, BoardService boardService, CommentService commentService) {
         this.postService = postService;
         this.boardService = boardService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/{boardId}/posts/add")
@@ -41,7 +44,7 @@ public class PostController {
         return "redirect:/boards/{boardId}";
     }
 
-    @PostMapping("/posts/{postId}")
+    @DeleteMapping("/posts/{postId}")
     public String deletePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
         Long boardId = postService.deletePostById(postId);
         redirectAttributes.addAttribute("boardId", boardId);
@@ -67,9 +70,11 @@ public class PostController {
     @GetMapping("/post/{postId}")
     public String getPostDetail(@PathVariable Long postId, Model model) {
         Post post = postService.findByPostId(postId);
+        List<Comment> comments = commentService.findCommentsByPost(post);
         Long boardId = post.getBoard().getId();
         model.addAttribute("post", post);
         model.addAttribute("boardId", boardId);
+        model.addAttribute("comments", comments);
         return "/post/post";
     }
 }
