@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <title th:text="${post.title}">게시글 상세</title>
 </head>
+
 <body>
     <!-- 목록으로 돌아가기 버튼 -->
     <div>
@@ -29,7 +33,33 @@
                 <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
             </form>
             <!-- 댓글 편집 링크 (댓글 편집 폼으로 이동) -->
-            <a th:href="@{/comment/{commentId}/edit(commentId=${comment.id})}">편집</a>
+            <button type="button" data-bs-toggle="modal" data-bs-target="#editCommentModal"
+                th:data-comment-id="${comment.id}" th:data-comment-content="${comment.content}"
+                onclick="setEditFormData(this)">편집</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCommentModalLabel">댓글 수정하기</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="commentEditForm" th:action="@{/comment/edit}" method="post">
+                    <!-- 댓글 ID를 저장할 숨겨진 필드 -->
+                    <input type="hidden" name="commentId" id="commentIdInput" />
+                    <div class="modal-body">
+                        <textarea class="form-control" name="content" id="commentContentTextarea"
+                            placeholder="댓글을 입력하세요..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                        <button type="submit" class="btn btn-primary">수정</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -42,5 +72,28 @@
         </form>
     </div>
 
+    <!-- 부트스트랩 JS 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        // 버튼으로부터 데이터를 가져와 편집 폼을 채우는 함수
+        function setEditFormData(button) {
+            var commentId = button.getAttribute('data-comment-id');
+            var commentContent = button.getAttribute('data-comment-content');
+
+            // 모달 내의 폼 요소를 가져와 값을 설정합니다.
+            var commentEditForm = document.getElementById('commentEditForm');
+            var commentContentTextarea = document.getElementById('commentContentTextarea');
+
+            // 폼의 action URL을 설정하고, textarea의 내용을 채웁니다.
+            commentEditForm.action = '/comment/' + commentId + '/edit';
+            commentContentTextarea.value = commentContent;
+        }
+        /*]]>*/
+    </script>
+
 </body>
+
 </html>
