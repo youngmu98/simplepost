@@ -1,7 +1,7 @@
 package com.simpo.simplepost.post.entity;
 
-import com.simpo.simplepost.global.common.BaseEntity;
 import com.simpo.simplepost.board.entity.Board;
+import com.simpo.simplepost.global.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,31 +17,21 @@ public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "post_id")
+    @Column(name = "post_id", nullable = false)
     private Long id;
 
+    @Column(nullable = false, length = 20)
     private String title;
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
 
     @ManyToOne
     @JoinColumn(name = "board_id")
     private Board board;
 
-    public Post(Long postId, String title, String content) {
-        this.id = postId;
-        this.title = title;
-        this.content = content;
-    }
-
-    public Post(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     public void addBoard(Board board) {
         if (board != null) {

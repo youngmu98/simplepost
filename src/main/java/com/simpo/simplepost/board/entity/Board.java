@@ -17,11 +17,12 @@ import java.util.List;
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
+    @Column(name = "board_id", nullable = false)
     private Long id;
 
     @Column(nullable = false, unique = true, length = 15)
     private String title;
+    @Column(nullable = false, length = 40)
     private String description;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)

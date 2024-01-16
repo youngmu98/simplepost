@@ -7,6 +7,7 @@ import com.simpo.simplepost.comment.service.CommentService;
 import com.simpo.simplepost.post.dto.PostCreateDto;
 import com.simpo.simplepost.post.dto.PostPatchDto;
 import com.simpo.simplepost.post.entity.Post;
+import com.simpo.simplepost.post.mapper.PostMapper;
 import com.simpo.simplepost.post.service.PostService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,29 +22,33 @@ public class PostController {
     private final PostService postService;
     private final BoardService boardService;
     private final CommentService commentService;
+    private final PostMapper postMapper;
 
-    public PostController(PostService postService, BoardService boardService, CommentService commentService) {
+    public PostController(PostService postService, BoardService boardService, CommentService commentService, PostMapper postMapper) {
         this.postService = postService;
         this.boardService = boardService;
         this.commentService = commentService;
+        this.postMapper = postMapper;
     }
 
+    // 게시글 생성폼
     @GetMapping("/{boardId}/posts/add")
-    public String springStart(Model model, @PathVariable Long boardId) {
+    public String getPostCreateView(Model model, @PathVariable Long boardId) {
         Board board = boardService.findById(boardId);
         model.addAttribute("board", board);
         return "post/addPostForm";
     }
 
-
+    // 게시글 생성
     @PostMapping("/{boardId}/posts/add")
     public String createPost(@PathVariable Long boardId, @ModelAttribute PostCreateDto postCreateDto, RedirectAttributes redirectAttributes) {
-        postCreateDto.setBoardId(boardId);
-        postService.addPost(postCreateDto);
+        Post post = postMapper.PostCreateDtoToPost(postCreateDto);
+        postService.addPost(post, boardId);
         redirectAttributes.addAttribute("boardId", boardId);
         return "redirect:/boards/{boardId}";
     }
 
+    // 게시글 삭제
     @DeleteMapping("/posts/{postId}")
     public String deletePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
         Long boardId = postService.deletePostById(postId);
@@ -51,6 +56,7 @@ public class PostController {
         return "redirect:/boards/{boardId}";
     }
 
+    // 게시글 수정폼
     @GetMapping("/posts/edit/{postId}")
     public String getPostEditView(@PathVariable Long postId, Model model) {
         Post post = postService.findByPostId(postId);
@@ -58,15 +64,15 @@ public class PostController {
         return "post/editPostForm";
     }
 
+    // 게시글 수정
     @PostMapping("/posts/edit/{postId}")
     public String updatePost(@PathVariable Long postId, @ModelAttribute PostPatchDto postPatchDto) {
-        postPatchDto.setPostId(postId);
-        Post editpost = postPatchDto.toEntity();
-        Post post = postService.updatePost(editpost);
-
+        Post editpost = postMapper.PostPatchDtoToPost(postPatchDto);
+        Post post = postService.updatePost(editpost, postId);
         return "redirect:/boards/" + post.getBoard().getId();
     }
 
+    // 게시글 상세페이지
     @GetMapping("/post/{postId}")
     public String getPostDetail(@PathVariable Long postId, Model model) {
         Post post = postService.findByPostId(postId);
