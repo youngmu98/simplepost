@@ -30,19 +30,7 @@ public class Board extends BaseEntity {
 //    @JoinColumn(name = "user_id")
 //    private User user;
 
-    public Board() {
-
-    }
-    public Board(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
-
-    public Board(Long id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-    }
+    public Board() { }
 
     public void addPost(Post post) {
         if (post != null) {

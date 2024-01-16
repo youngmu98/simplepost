@@ -3,29 +3,31 @@ package com.simpo.simplepost.board.controller;
 import com.simpo.simplepost.board.dto.BoardPatchDto;
 import com.simpo.simplepost.board.dto.BoardPostDto;
 import com.simpo.simplepost.board.entity.Board;
+import com.simpo.simplepost.board.mapper.BoardMapper;
 import com.simpo.simplepost.board.service.BoardService;
 import com.simpo.simplepost.post.entity.Post;
 import com.simpo.simplepost.post.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/boards")
+
 @Controller
+@RequestMapping("/boards")
 public class BoardController {
 
     private final PostService postService;
     private final BoardService boardService;
+    private final BoardMapper boardMapper;
 
-    public BoardController(PostService postService, BoardService boardService) {
+    public BoardController(PostService postService, BoardService boardService, BoardMapper boardMapper) {
         this.postService = postService;
         this.boardService = boardService;
+        this.boardMapper = boardMapper;
     }
 
     @GetMapping("")
@@ -42,7 +44,7 @@ public class BoardController {
 
     @PostMapping("/add")
     public String postBoard(@ModelAttribute BoardPostDto boardPostDto) {
-        Board requestBoard = boardPostDto.toEntity();
+        Board requestBoard = boardMapper.boardPostDtotoBoard(boardPostDto);
         boardService.createBoard(requestBoard);
 
         return "redirect:/boards";
@@ -58,7 +60,7 @@ public class BoardController {
     @PostMapping("/edit/{boardId}")
     public String updateBoard(@PathVariable Long boardId, @ModelAttribute BoardPatchDto boardPatchDto) {
         boardPatchDto.setId(boardId);
-        Board board = boardPatchDto.toEntity();
+        Board board = boardMapper.boardPatchDtoToboard(boardPatchDto);
         boardService.updateBoard(board);
         return "redirect:/boards";
     }
