@@ -73,6 +73,7 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
     @Override
     @Transactional
     public void deleteBoard(Long id) {
+        jdbcTemplate.update("DELETE FROM comment WHERE post_id IN (SELECT post_id FROM post WHERE board_id = ?)", id);
         jdbcTemplate.update("DELETE FROM post WHERE board_id = ?", id);
         jdbcTemplate.update("DELETE FROM board WHERE board_id = ?", id);
     }

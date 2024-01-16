@@ -2,12 +2,15 @@ package com.simpo.simplepost.post.service;
 
 import com.simpo.simplepost.board.entity.Board;
 import com.simpo.simplepost.board.repository.JdbcBoardRepository;
+import com.simpo.simplepost.comment.entity.Comment;
+import com.simpo.simplepost.comment.repository.CommentRepository;
 import com.simpo.simplepost.post.dto.PostCreateDto;
 import com.simpo.simplepost.post.entity.Post;
 import com.simpo.simplepost.post.repository.PostRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,10 +19,12 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final JdbcBoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
-    public PostService(PostRepository postRepository, JdbcBoardRepository boardRepository) {
+    public PostService(PostRepository postRepository, JdbcBoardRepository boardRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.boardRepository = boardRepository;
+        this.commentRepository = commentRepository;
     }
 
     public Page<Post> findPostsByBoardAndKeyword(Board board, String keyword, PageRequest pageRequest){
@@ -45,9 +50,11 @@ public class PostService {
         return posts;
     }
 
+    @Transactional
     public Long deletePostById(Long postId) {
         Post post = postRepository.findById(postId).orElse(null);
         Long boardId = post.getBoard().getId();
+        commentRepository.deleteByPostId(postId);
         postRepository.delete(post);
         return boardId;
     }
