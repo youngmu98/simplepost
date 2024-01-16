@@ -2,7 +2,6 @@ package com.simpo.simplepost.comment.entity;
 
 import com.simpo.simplepost.common.BaseEntity;
 import com.simpo.simplepost.post.entity.Post;
-import com.simpo.simplepost.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +22,26 @@ public class Comment extends BaseEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    public Comment(String content) {
+        this.content = content;
+    }
+
+    public void addPost(Post post) {
+        if (post != null) {
+            this.post = post;
+        }
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+//    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
+
 
 }
