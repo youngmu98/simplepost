@@ -77,4 +77,19 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
         jdbcTemplate.update("DELETE FROM post WHERE board_id = ?", id);
         jdbcTemplate.update("DELETE FROM board WHERE board_id = ?", id);
     }
+
+    @Override
+    public boolean findByTitle(String title) {
+        Optional<Board> board = jdbcTemplate.query("SELECT * FROM board WHERE title = ?",
+                        rowMapper,
+                        title)
+                .stream().findFirst();
+        if (board.isEmpty()){
+            return false;
+        }else {
+            return true;
+        }
+
+
+    }
 }

@@ -2,6 +2,8 @@ package com.simpo.simplepost.board.service;
 
 import com.simpo.simplepost.board.entity.Board;
 import com.simpo.simplepost.board.repository.JdbcBoardRepository;
+import com.simpo.simplepost.global.exception.ExceptionCode;
+import com.simpo.simplepost.global.exception.ServiceLogicException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +27,8 @@ public class BoardService {
     }
 
     public void updateBoard(Board board){
-        Board editBoard = boardRepository.findById(board.getId()).orElse(null);
+        Board editBoard = boardRepository.findById(board.getId())
+                .orElseThrow(() -> new ServiceLogicException(ExceptionCode.BOARD_NOT_FOUND));
 
         Optional.ofNullable(board.getTitle())
                 .ifPresent(title -> editBoard.setTitle(title));
@@ -36,10 +39,16 @@ public class BoardService {
     }
 
     public Board findById(Long boardId){
-        return boardRepository.findById(boardId).orElse(null);
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new ServiceLogicException(ExceptionCode.BOARD_NOT_FOUND));
     }
 
     public void deleteBoard(Long boardId) {
         boardRepository.deleteBoard(boardId);
+    }
+
+
+    public boolean findByTitle(String title) {
+        return boardRepository.findByTitle(title);
     }
 }

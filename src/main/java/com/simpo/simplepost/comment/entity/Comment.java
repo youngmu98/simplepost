@@ -1,6 +1,6 @@
 package com.simpo.simplepost.comment.entity;
 
-import com.simpo.simplepost.common.BaseEntity;
+import com.simpo.simplepost.global.common.BaseEntity;
 import com.simpo.simplepost.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

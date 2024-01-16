@@ -1,6 +1,6 @@
 package com.simpo.simplepost.board.entity;
 
-import com.simpo.simplepost.common.BaseEntity;
+import com.simpo.simplepost.global.common.BaseEntity;
 import com.simpo.simplepost.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +20,7 @@ public class Board extends BaseEntity {
     @Column(name = "board_id")
     private Long id;
 
+    @Column(nullable = false, unique = true, length = 15)
     private String title;
     private String description;
 

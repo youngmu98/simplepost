@@ -1,16 +1,12 @@
 package com.simpo.simplepost.post.entity;
 
-import com.simpo.simplepost.common.BaseEntity;
+import com.simpo.simplepost.global.common.BaseEntity;
 import com.simpo.simplepost.board.entity.Board;
-import com.simpo.simplepost.comment.entity.Comment;
-import com.simpo.simplepost.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

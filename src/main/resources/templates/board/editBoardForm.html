@@ -9,15 +9,16 @@
     <form th:action="@{/boards/edit/{board_id}(board_id=${board.id})}" th:object="${board}" method="post">
         <div>
             <label for="title">제목:</label>
-            <input type="text" id="title" name="title" th:value="${board.title}" required />
+            <input type="text" id="title" name="title" th:field="${board.title}" required />
+            <div th:errorclass="error" th:if="${#fields.hasErrors('title')}" th:errors="${board.title}">제목 오류</div>
         </div>
         <div>
             <label for="description">설명:</label>
-            <input type="text" id="description" name="description" th:value="${board.description}" required />
+            <input type="text" id="description" name="description" th:field="${board.description}" required />
         </div>
         <div>
             <button type="submit">게시판 수정</button>
-            <button type="button" onclick="window.history.back();">취소</button>
+            <button type="button" onclick="window.location.href='/boards';">취소</button>
         </div>
     </form>
 </body>

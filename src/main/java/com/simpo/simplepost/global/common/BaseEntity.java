@@ -1,4 +1,4 @@
-package com.simpo.simplepost.common;
+package com.simpo.simplepost.global.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
