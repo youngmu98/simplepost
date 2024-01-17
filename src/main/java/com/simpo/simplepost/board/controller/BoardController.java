@@ -71,12 +71,6 @@ public class BoardController {
     // 게시판 수정
     @PostMapping("/edit/{boardId}")
     public String updateBoard(@PathVariable Long boardId, @ModelAttribute("boardPatchDto") BoardPatchDto boardPatchDto, BindingResult bindingResult, Model model) {
-        if (boardService.findByTitle(boardPatchDto.getTitle())) {
-            Board board = boardService.findById(boardId);
-            bindingResult.rejectValue("title", "error.title", "이미 존재하는 게시판입니다.");
-            model.addAttribute("board", board);
-            return "board/editBoardForm";
-        }
         boardPatchDto.setId(boardId);
         Board board = boardMapper.boardPatchDtoToboard(boardPatchDto);
         boardService.updateBoard(board);

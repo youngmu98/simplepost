@@ -89,7 +89,5 @@ public class JdbcBoardRepository implements JdbcTemplateRepository {
         }else {
             return true;
         }
-
-
     }
 }
