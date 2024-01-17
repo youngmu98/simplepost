@@ -22,17 +22,16 @@
     <div class="container">
     <h1>게시글 생성</h1>
     <form th:action="@{/{boardId}/posts/add(boardId=${board.id})}"  method="post">
-        <div class="row mb-3">
+        <div class="mb-3">
             <label for="title" class="col-sm-2 col-form-label">제목</label>
-            <div class="col-sm-10">
+            <div class="col-sm-12">
                 <input class="form-control" type="text" id="title" name="title"  required />
             </div>
         </div>
-        <div class="row mb-3">
+        <div style="margin-bottom: 10px;" class="mb-3">
             <label for="content" class="col-sm-2 col-form-label">내용</label>
-            <div class="col-sm-10">
-                <input class="form-control" type="text" id="content" name="content"  required />
-            </div>
+            <div class="col-sm-12">
+                <textarea class="form-control" type="text" id="content" name="content" style="height: 100px" required ></textarea>            </div>
         </div>
         <div class="button">
             <div>
