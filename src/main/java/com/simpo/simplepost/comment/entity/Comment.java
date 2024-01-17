@@ -6,11 +6,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 public class Comment extends BaseEntity {
 
@@ -19,29 +21,21 @@ public class Comment extends BaseEntity {
     @Column(name = "comment_id")
     private Long id;
 
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
 
-    public Comment(String content) {
-        this.content = content;
-    }
+    //    @ManyToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
     public void addPost(Post post) {
         if (post != null) {
             this.post = post;
         }
     }
-
-    public void updateContent(String content) {
-        this.content = content;
-    }
-
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-
 
 }

@@ -7,8 +7,4 @@ import lombok.Data;
 public class CommentCreateDto {
     private Long postId;
     private String content;
-
-    public Comment toEntity() {
-        return new Comment(content);
-    }
 }
