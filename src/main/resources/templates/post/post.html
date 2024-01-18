@@ -8,93 +8,99 @@
     <title th:text="${post.title}">게시글 상세</title>
 </head>
 <style>
-    .container{
+    .container {
         width: 700px;
         margin-top: 100px;
     }
-    .custom-button{
+
+    .custom-button {
         width: 50px;
     }
 </style>
+
 <body>
     <div class="shadow-sm p-3 mb-5 bg-body rounded container">
-    <!-- 목록으로 돌아가기 버튼 -->
-    <div>
-        <a th:href="@{/boards/{boardId}(boardId=${boardId})}">게시글 목록으로 돌아가기</a>
-    </div>
-
-    <div class="shadow-sm p-3 mb-5 bg-body rounded">
-    <!-- 게시글 제목 -->
-    <h1 th:text="${post.title}">게시글 제목</h1>
-
-    <!-- 게시글 내용 -->
-    <div >
-        <p th:text="${post.content}" style="white-space: normal; word-wrap: break-word;">게시글 내용</p>
-    </div>
-</div>
-    <hr>
-    <div class="shadow-sm p-3 mb-3 bg-body rounded">
-    <h4>
-        댓글 <span th:text="${#lists.size(comments)}">0</span>개
-    </h4>
-    <!-- 댓글 작성 폼 -->
+        <!-- 목록으로 돌아가기 버튼 -->
         <div>
-            <form class="input-group mb-3" th:action="@{/comment/add}" method="post" style="max-width: 700px;" onsubmit="return validateCommentForm()">
-                <input class="form-control" type="hidden" name="postId" th:value="${post.id}" />
-                <textarea class="form-control" style="flex: 1; min-width: 0;" name="content" placeholder="댓글을 입력하세요" id="commentContent"></textarea>
-                <button class="btn btn-outline-secondary" type="submit">댓글 작성</button>
-            </form>
+            <a th:href="@{/boards/{boardId}(boardId=${boardId})}">게시글 목록으로 돌아가기</a>
         </div>
 
-    <!-- 댓글 목록 -->
-    <div>
-        <div class="row mb-2 align-items-center" th:each="comment: ${comments}">
-            <div class="col-md-9">
-                <p th:text="${#temporals.format(comment.updatedAt, 'yyyy-MM-dd HH:mm')}" style="font-size: 0.65rem; color: gray;">작성 시간 마지막 수정</p>
-                <p th:text="${comment.content}" style="white-space: normal; word-wrap: break-word;">댓글 내용</p>
-                <hr>
-            </div>
-            <!-- 댓글 편집 링크 (댓글 편집 폼으로 이동) -->
-            <div class="col-md-1"> 
-                <button class="btn btn-outline-info btn-sm custom-button" type="button" data-bs-toggle="modal" data-bs-target="#editCommentModal"
-                th:data-comment-id="${comment.id}" th:data-comment-content="${comment.content}"
-                onclick="setEditFormData(this)">편집</button>
-            </div>
-            <!-- 댓글 삭제 버튼 -->
-            <div class="col-md-1">
-                <form th:action="@{/comment/delete(commentId=${comment.id})}" method="post">
-                    <input type="hidden" name="_method" value="delete" />
-                    <button class="btn btn-outline-danger btn-sm custom-button" type="submit" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
-                </form>
+        <div class="shadow-sm p-3 mb-5 bg-body rounded">
+            <!-- 게시글 제목 -->
+            <h1 th:text="${post.title}">게시글 제목</h1>
+
+            <!-- 게시글 내용 -->
+            <div>
+                <p th:text="${post.content}" style="white-space: normal; word-wrap: break-word;">게시글 내용</p>
             </div>
         </div>
-    </div>
-</div>
-    <div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCommentModalLabel">댓글 수정하기</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <hr>
+        <div class="shadow-sm p-3 mb-3 bg-body rounded">
+            <h4>
+                댓글 <span th:text="${#lists.size(comments)}">0</span>개
+            </h4>
+            <!-- 댓글 작성 폼 -->
+            <div>
+                <form class="input-group mb-3" th:action="@{/comment/add}" method="post" style="max-width: 700px;"
+                    onsubmit="return validateCommentForm()">
+                    <input class="form-control" type="hidden" name="postId" th:value="${post.id}" />
+                    <textarea class="form-control" style="flex: 1; min-width: 0;" name="content" placeholder="댓글을 입력하세요"
+                        id="commentContent"></textarea>
+                    <button class="btn btn-outline-secondary" type="submit">댓글 작성</button>
+                </form>
+            </div>
+
+            <!-- 댓글 목록 -->
+            <div>
+                <div class="row mb-2 align-items-center" th:each="comment: ${comments}">
+                    <div class="col-md-9">
+                        <p th:text="${#temporals.format(comment.updatedAt, 'yyyy-MM-dd HH:mm')}"
+                            style="font-size: 0.65rem; color: gray;">작성 시간 마지막 수정</p>
+                        <p th:text="${comment.content}" style="white-space: normal; word-wrap: break-word;">댓글 내용</p>
+                        <hr>
+                    </div>
+                    <!-- 댓글 편집 링크 (댓글 편집 폼으로 이동) -->
+                    <div class="col-md-1">
+                        <button class="btn btn-outline-info btn-sm custom-button" type="button" data-bs-toggle="modal"
+                            data-bs-target="#editCommentModal" th:data-comment-id="${comment.id}"
+                            th:data-comment-content="${comment.content}" onclick="setEditFormData(this)">편집</button>
+                    </div>
+                    <!-- 댓글 삭제 버튼 -->
+                    <div class="col-md-1">
+                        <form th:action="@{/comment/delete(commentId=${comment.id})}" method="post">
+                            <input type="hidden" name="_method" value="delete" />
+                            <button class="btn btn-outline-danger btn-sm custom-button" type="submit"
+                                onclick="return confirm('정말 삭제하시겠습니까?');">삭제</button>
+                        </form>
+                    </div>
                 </div>
-                <form id="commentEditForm" th:action="@{/comment/edit}" method="post">
-                    <!-- 댓글 ID를 저장할 숨겨진 필드 -->
-                    <input type="hidden" name="commentId" id="commentIdInput" />
-                    <div class="modal-body">
-                        <textarea class="form-control" name="content" id="commentContentTextarea"
-                            placeholder="댓글을 입력하세요..."></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                        <button type="submit" class="btn btn-primary">수정</button>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
+        <div class="modal fade" id="editCommentModal" tabindex="-1" aria-labelledby="editCommentModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCommentModalLabel">댓글 수정하기</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="commentEditForm" th:action="@{/comment/edit}" method="post">
+                        <!-- 댓글 ID를 저장할 숨겨진 필드 -->
+                        <input type="hidden" name="commentId" id="commentIdInput" />
+                        <div class="modal-body">
+                            <textarea class="form-control" name="content" id="commentContentTextarea"
+                                placeholder="댓글을 입력하세요..."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            <button type="submit" class="btn btn-primary">수정</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
-    
+
     </div>
     <!-- 부트스트랩 JS 추가 -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
