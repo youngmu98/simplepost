@@ -18,7 +18,7 @@
     }
 </style>
 <body>
-    <div class="container">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded container">
     <h1>게시글 편집</h1>
     <form th:action="@{/posts/edit/{post_id}(post_id=${post.id})}" th:object="${post}" method="post">
         <div class="mb-3">

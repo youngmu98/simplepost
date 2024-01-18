@@ -19,7 +19,7 @@
     
 </style>
 <body>
-    <div class="container">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded container">
     <h1>게시판 생성</h1>
     <form th:action="@{/boards/add}" th:object="${boardPostDto}"  method="post">
         <div class="row mb-3">

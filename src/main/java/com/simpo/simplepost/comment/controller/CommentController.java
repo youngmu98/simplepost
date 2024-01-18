@@ -30,15 +30,6 @@ public class CommentController {
     // 댓글 생성
     @PostMapping("/add")
     public String createComment(@RequestParam Long postId, @ModelAttribute CommentCreateDto commentCreateDto, Model model) {
-        if (commentCreateDto.getContent().isEmpty()) {
-            Post post = postService.findByPostId(postId);
-            List<Comment> comments = commentService.findCommentsByPost(post);
-            Long boardId = post.getBoard().getId();
-            model.addAttribute("post", post);
-            model.addAttribute("boardId", boardId);
-            model.addAttribute("comments", comments);
-            return "/post/post";
-        }
         Comment comment = commentMapper.commentCreateDtoToComment(commentCreateDto);
         Comment createComment = commentService.createComment(comment, postId);
         return "redirect:/post/" + createComment.getPost().getId();

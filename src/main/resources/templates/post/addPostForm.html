@@ -19,7 +19,7 @@
     
 </style>
 <body>
-    <div class="container">
+    <div class="shadow-sm p-3 mb-5 bg-body rounded container">
     <h1>게시글 생성</h1>
     <form th:action="@{/{boardId}/posts/add(boardId=${board.id})}"  method="post">
         <div class="mb-3">
