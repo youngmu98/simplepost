@@ -46,7 +46,7 @@
                     <tbody>
                         <tr class="align-middle" th:each="post, psotStat  : ${postPage}"
                             th:onclick="|location.href='@{/post/{id}(id=${post.id})}'|" style="cursor:pointer;">
-                            <td th:text="${psotStat.count}">1</td>
+                            <td th:text="${psotStat.count  + (postPage.number * postPage.size)}">1</td>
                             <td th:text="${post.title}">Post Title</td>
                             <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</td>
                             <td>
