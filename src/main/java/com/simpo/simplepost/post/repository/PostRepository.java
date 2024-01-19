@@ -11,8 +11,6 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByBoardId(Long boardId);
-
     Page<Post> findAllByBoardOrderByCreatedAtDesc(Board board, Pageable pageable);
 
     Page<Post> findAllByBoardAndTitleContaining(Board board, String keyword, Pageable pageable);

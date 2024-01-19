@@ -1,14 +1,15 @@
 package com.simpo.simplepost.comment.service;
 
-import com.simpo.simplepost.comment.dto.CommentCreateDto;
-import com.simpo.simplepost.comment.dto.CommentPatchDto;
 import com.simpo.simplepost.comment.entity.Comment;
 import com.simpo.simplepost.comment.repository.CommentRepository;
+import com.simpo.simplepost.global.exception.ExceptionCode;
+import com.simpo.simplepost.global.exception.ServiceLogicException;
 import com.simpo.simplepost.post.entity.Post;
 import com.simpo.simplepost.post.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CommentService {
@@ -20,13 +21,11 @@ public class CommentService {
         this.postRepository = postRepository;
     }
 
-    public Comment createComment(CommentCreateDto commentCreateDto) {
-        Comment comment = commentCreateDto.toEntity();
-        Post post = postRepository.findById(commentCreateDto.getPostId()).orElse(null);
+    public Comment createComment(Comment comment, Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new ServiceLogicException(ExceptionCode.POST_NOT_FOUND));
         comment.addPost(post);
-
         commentRepository.save(comment);
-
         return comment;
     }
 
@@ -35,15 +34,17 @@ public class CommentService {
     }
 
     public Long deleteComment(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElse(null);
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ServiceLogicException(ExceptionCode.COMMENT_NOT_FOUND));
         commentRepository.delete(comment);
         return comment.getPost().getId();
     }
 
-    public Comment editComment(Long commentId, CommentPatchDto commentPatchDto) {
-        Comment comment = commentRepository.findById(commentId).orElse(null);
-        comment.updateContent(commentPatchDto.getContent());
-        commentRepository.save(comment);
-        return comment;
+    public Long editComment(Long commentId, Comment comment) {
+        Comment editComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new ServiceLogicException(ExceptionCode.COMMENT_NOT_FOUND));
+        Optional.ofNullable(comment.getContent()).ifPresent(content -> editComment.setContent(content));
+        commentRepository.save(editComment);
+        return editComment.getPost().getId();
     }
 }

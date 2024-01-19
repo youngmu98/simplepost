@@ -14,4 +14,6 @@ public interface JdbcTemplateRepository {
     Board saveBoard(Board board);
 
     void deleteBoard(Long id);
+
+    boolean findByTitle(String title);
 }

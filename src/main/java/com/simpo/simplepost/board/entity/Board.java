@@ -1,6 +1,6 @@
 package com.simpo.simplepost.board.entity;
 
-import com.simpo.simplepost.common.BaseEntity;
+import com.simpo.simplepost.global.common.BaseEntity;
 import com.simpo.simplepost.post.entity.Post;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,10 +17,12 @@ import java.util.List;
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id")
+    @Column(name = "board_id", nullable = false)
     private Long id;
 
+    @Column(nullable = false, unique = true, length = 15)
     private String title;
+    @Column(nullable = false, length = 40)
     private String description;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -30,19 +32,7 @@ public class Board extends BaseEntity {
 //    @JoinColumn(name = "user_id")
 //    private User user;
 
-    public Board() {
-
-    }
-    public Board(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
-
-    public Board(Long id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-    }
+    public Board() { }
 
     public void addPost(Post post) {
         if (post != null) {
