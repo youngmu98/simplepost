@@ -27,18 +27,18 @@
 
         <div class="shadow-sm p-3 mb-5 bg-body rounded">
             <!-- 게시글 제목 -->
-            <h1 th:text="${post.title}">게시글 제목</h1>
+            <h3 th:text="${post.title}">게시글 제목</h3>
 
             <!-- 게시글 내용 -->
             <div>
-                <p th:text="${post.content}" style="white-space: normal; word-wrap: break-word;">게시글 내용</p>
+                <p th:utext="${post.content.replaceAll('\n', '<br/>')}" th:text="${post.content}" style="white-space: normal; word-wrap: break-word;">게시글 내용</p>
             </div>
         </div>
         <hr>
         <div class="shadow-sm p-3 mb-3 bg-body rounded">
-            <h4>
+            <h5>
                 댓글 <span th:text="${#lists.size(comments)}">0</span>개
-            </h4>
+            </h5>
             <!-- 댓글 작성 폼 -->
             <div>
                 <form class="input-group mb-3" th:action="@{/comment/add}" method="post" style="max-width: 700px;"

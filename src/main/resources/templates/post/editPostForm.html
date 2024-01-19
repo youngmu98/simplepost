@@ -27,7 +27,7 @@
             <div class="mb-3">
                 <label for="title" class="col-sm-2 col-form-label">제목</label>
                 <div class="col-sm-12">
-                    <input class="form-control" type="text" id="title" name="title" th:value="${post.title}" required />
+                    <input class="form-control" type="text" id="title" name="title" th:value="${post.title}" maxlength="20" required />
                 </div>
             </div>
             <div style="margin-bottom: 10px;" class="mb-3">
