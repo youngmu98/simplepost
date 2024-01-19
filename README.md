@@ -17,7 +17,7 @@ Spring Boot + Thymeleaf 게시판 만들기
  - **ORM** : JPA, JdbcTemplate
 
 ### 🔗 ERD
-<img src="./simple-post/img/simpoERD(24.01.19).png" width="450" height="450">
+<img src="./img/simpoERD(24.01.19).png" width="450" height="450">
 
 ### 📌 주요기능
 #### 게시판 페이지
